@@ -1,0 +1,175 @@
+C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    10/15/2018 15:49:25 PAGE 1   
+
+
+C51 COMPILER V8.08, COMPILATION OF MODULE TLV5618_HC05_TEST1
+OBJECT MODULE PLACED IN TLV5618+HC05_test1.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\Keil\C51\BIN\C51.EXE TLV5618+HC05_test1.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //=====================================================================
+   2          //                    TLV5618 DA转换驱动程序
+   3          //硬件连接: DIN ——P0^0;  
+   4          //          SCLK ——P0^1;    
+   5          //          CS   ——P0^2;      
+   6          //          VDD --逻辑电源(+5V)
+   7          //          AGND --GND(0V)
+   8          
+   9          //说明   参考电压为0—3.5V，本程序为2.5V
+  10          //       输出模拟电压为:V=2*Vref*(dignum/0x1000) 注:dignum后四位为:0x0000~~0x0fff
+  11          //注意: 所需输入的数字信号值为16位数,其中D15~~D12为特殊位设置,D11~~D0为数据位00
+             -0~~fff
+  12          
+  13          
+  14          #include<reg52.h>                                                       //包含51单片机寄存器定义的头文件
+  15          #include<intrins.h>     
+  16          #define uint unsigned int
+  17          #define uchar unsigned char
+  18          #define Channal_A     1    //通道A
+  19          #define Channal_B     2    //通道B
+  20          #define Channal_AB    3    //通道A&B
+  21          //**************************一下为函数声明修**************************************
+  22          static void DA_conver(uint Dignum);
+  23          extern void Write_A_B(uint Data_A,uint Data_B,uchar Channal,bit Model);
+  24          void InitUART  (void);
+  25          void SendByte(unsigned char dat);
+  26          void SendStr(unsigned char *s);
+  27          //**************************修改硬件时要修改的部分********************************
+  28          sbit DIN   = P1^0;     //数据输入端
+  29          sbit SCLK = P1^1;     //时钟信号
+  30          sbit CS    = P1^2;     //片选输入端，低电平有效
+  31          //*******************  串口初始化*******************
+  32          void InitUART  (void)
+  33          {
+  34   1          SCON  =0x50;       // SCON: 模式 1, 8-bit UART, 使能接收 
+  35   1          TMOD |= 0x20;      // TMOD:timer 1, mode 2, 8-bit 重装
+  36   1          TH1 =TL1= 0xFD;   // TH1:  重装值9600 波特率 晶振 11.0592MHz  
+  37   1          TR1   =1;               // TR1: timer 1 打开                     
+  38   1          EA   = 1;              //打开总中断
+  39   1          ES   = 1;              //打开串口中断
+  40   1      }   
+  41          //******************* 发送一个字节 *******************
+  42          void SendByte(unsigned char dat)
+  43          {
+  44   1         SBUF = dat;
+  45   1         while(!TI);
+  46   1         TI = 0;  
+  47   1      }
+  48          //**************** 发送一个字符串 *******************
+  49          void SendStr(unsigned char *s)
+  50          {
+  51   1          while(*s!='\0')   // \0表示字符串结束标志，通过检测是否字符串末尾
+  52   1          {
+  53   2             SendByte(*s);
+  54   2             s++;
+C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    10/15/2018 15:49:25 PAGE 2   
+
+  55   2          }
+  56   1      }
+  57          //****************** 串口中断程序 *******************
+  58          void UART_SER (void) interrupt 4 
+  59          {
+  60   1         unsigned char Temp;        
+  61   1         if(RI)                           //判断是接收中断产生
+  62   1         {
+  63   2          RI=0;                      //标志位清零
+  64   2          Temp=SBUF;           //读入缓冲区的值
+  65   2          Write_A_B(Temp,0x0000,Channal_A,0);           
+  66   2          SendByte(Temp);  //把接收到的值再发回电脑端
+  67   2          }
+  68   1      }
+  69          //=================================================================
+  70          // 函数名称 ：void DA_conver(uint Dignum)
+  71          // 函数功能 ：进行DA转换
+  72          // 入口参数 ：Dignum:根据说明设置转化数据.头四位为特殊位用于选择转化方式,
+  73          //            以及用于通道选择.请自行设置.后12位为需要转换的值
+  74          // 出口参数 ：无
+  75          
+  76          void DA_conver(uint Dignum)
+  77          {
+  78   1      uint Dig=0;
+  79   1      uchar i=0;
+  80   1      SCLK=1;
+  81   1      CS=0;           //片选有效
+  82   1      for(i=0;i<16;i++)   //写入16为Bit的控制位和数据
+  83   1      {
+  84   2         Dig=Dignum&0x8000;
+  85   2         if(Dig)
+  86   2         {
+  87   3          DIN=1;
+  88   3         }
+  89   2         else
+  90   2         {
+  91   3          DIN=0;
+  92   3         }
+  93   2         SCLK=0;
+  94   2         _nop_();
+  95   2         Dignum<<=1;
+  96   2         SCLK=1;
+  97   2         _nop_();
+  98   2      }
+  99   1      SCLK=1;
+ 100   1      CS=1;       //片选无效
+ 101   1      }
+ 102          //=================================================================
+ 103          // 函数名称 ：void Write_A_B(uint Data_A,uint Data_B,uchar Channal,bit Model)
+ 104          // 函数功能 ：模式、通道选择并进行DA转换
+ 105          // 入口参数 ：Data_A：A通道转换的电压值
+ 106          //            Data_B：B通道转换的电压值
+ 107          //            Channal：通道选择，其值为Channal_A，Channal_B,或Channal_AB
+ 108          //            Model：速度控制位 0：slow mode 1：fast mode
+ 109          // 出口参数 ：无
+ 110          // 说明：     Data_A，Data_B的范围为：0—0x0fff
+ 111          //            本程序如果只需要一个通道时，另外一个通道的值可任意，但是不能�
+             -�省
+ 112          //=================================================================
+ 113          void Write_A_B(uint Data_A,uint Data_B,uchar Channal,bit Model)
+ 114          {
+ 115   1      uint Temp;
+C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    10/15/2018 15:49:25 PAGE 3   
+
+ 116   1      if(Model)
+ 117   1      {
+ 118   2         Temp=0x4000;
+ 119   2      }
+ 120   1      else
+ 121   1          {
+ 122   2         Temp=0x0000;
+ 123   2      }
+ 124   1      switch(Channal)
+ 125   1      {
+ 126   2          case Channal_A:         //A通道
+ 127   2               DA_conver(Temp|0x8000|(0x0fff&Data_A));
+ 128   2            break;
+ 129   2          case Channal_B:       //B通道
+ 130   2               DA_conver(Temp|0x0000|(0x0fff&Data_B));
+ 131   2          break;
+ 132   2          case Channal_AB:
+ 133   2               DA_conver(Temp|0x1000|(0x0fff&Data_B));        //A&B通道
+ 134   2               DA_conver(Temp|0x8000|(0x0fff&Data_A));
+ 135   2          break;
+ 136   2          default:
+ 137   2               break;
+ 138   2      }
+ 139   1      }
+ 140          
+ 141          int main(void)
+ 142          {
+ 143   1              InitUART();
+ 144   1          while(1);
+ 145   1         
+ 146   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    265    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
