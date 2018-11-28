@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"TLV5618+HC05_test2.obj" 
+TO "TEST2" 
+RAMSIZE(256) 
