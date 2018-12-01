@@ -1,0 +1,138 @@
+C51 COMPILER V8.08   MPSG_V1_0                                                             11/30/2018 13:53:09 PAGE 1   
+
+
+C51 COMPILER V8.08, COMPILATION OF MODULE MPSG_V1_0
+OBJECT MODULE PLACED IN MPSG_V1.0.OBJ
+COMPILER INVOKED BY: E:\Program Files (x86)\Keil\C51\BIN\C51.EXE MPSG_V1.0.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //=====================================================================
+   2          //                    一种基于智能手机的多功能生理信号发生器程序
+   3          //               SIVI_Multifunction-Physiological-Signal-Generator
+   4          //                                MPSG_V1.0
+   5          //硬件连接:  TLV5618:DIN ——P1^0;  
+   6          //                  SCLK ——P1^1;    
+   7          //                  CS  ——P1^2;      
+   8          //                  VDD --逻辑电源(+5V)
+   9          //                  AGND --GND(0V)
+  10          //          HC-05:  VDD --逻辑电源(+5V)
+  11          //                  AGND --GND(0V)
+  12          
+  13          //注意: 所需输入的数字信号值为16位数,其中D15~~D12为特殊位设置,D11~~D0为数据位00
+             -0~~fff
+  14          
+  15          /***********************************************************************************/
+  16          #include<reg52.h>                                                       //包含51单片机寄存器定义的头文件
+  17          #include<intrins.h>     
+  18          #define uint unsigned int
+  19          #define uchar unsigned char
+  20          static void DA_convert(uint Dignum);
+  21          extern void Write_A_B(uint Data,bit Model);
+  22          void InitUART  (void);
+  23          void SendByte(unsigned char dat);
+  24          void SendStr(unsigned char *s);
+  25          sbit DIN   = P1^0;     //数据输入端
+  26          sbit SCLK = P1^1;     //时钟信号
+  27          sbit CS    = P1^2;     //片选输入端，低电平有效
+  28          void InitUART  (void)
+  29          {
+  30   1          SCON  =0x50;       // SCON: 模式 1, 8-bit UART, 使能接收 
+  31   1          TMOD |= 0x10;      // TMOD:timer 1, mode 1, 16-bit 重装
+  32   1          TH1 =TL1= 0xFD;   // TH1:  重装值9600 波特率 晶振 11.0592MHz  
+  33   1          TR1   =1;               // TR1: timer 1 打开                     
+  34   1          EA   = 1;              //打开总中断
+  35   1          ES   = 1;              //打开串口中断
+  36   1      }   
+  37          //******************* 发送一个字节 *******************
+  38          void SendByte(unsigned char dat)
+  39          {
+  40   1         SBUF = dat;
+  41   1         while(!TI);
+  42   1         TI = 0;  
+  43   1      }
+  44          //**************** 发送一个字符串 *******************
+  45          void SendStr(unsigned char *s)
+  46          {
+  47   1          while(*s!='\0')   // \0表示字符串结束标志，通过检测是否字符串末尾
+  48   1          {
+  49   2             SendByte(*s);
+  50   2             s++;
+  51   2          }
+  52   1      }
+  53          //****************** 串口中断程序 *******************
+  54          void UART_SER (void) interrupt 4 
+C51 COMPILER V8.08   MPSG_V1_0                                                             11/30/2018 13:53:09 PAGE 2   
+
+  55          {
+  56   1         unsigned char Temp;        
+  57   1         if(RI)                           //判断是接收中断产生
+  58   1         {
+  59   2          RI=0;                      //标志位清零
+  60   2          Temp=SBUF;           //读入缓冲区的值
+  61   2          Write_A_B(Temp,1);           
+  62   2          SendByte(Temp);  //把接收到的值再发回电脑端
+  63   2          }
+  64   1      }
+  65          void DA_convert(uint Dignum)
+  66          {
+  67   1      uint Dig=0;
+  68   1      uchar i=0;
+  69   1      SCLK=1;
+  70   1      CS=0;           //片选有效
+  71   1      for(i=0;i<16;i++)   //写入16Bit的控制位和数据
+  72   1      {
+  73   2         Dig=Dignum&0x8000;
+  74   2         if(Dig)
+  75   2         {
+  76   3          DIN=1;
+  77   3         }
+  78   2         else
+  79   2         {
+  80   3          DIN=0;
+  81   3         }
+  82   2         SCLK=0;
+  83   2         _nop_();
+  84   2         Dignum<<=1;
+  85   2         SCLK=1;
+  86   2         _nop_();
+  87   2      }
+  88   1      SCLK=1;
+  89   1      CS=1;       //片选无效
+  90   1      }
+  91          void Write_A_B(uint Data,bit Model)
+  92          {
+  93   1      uint Temp;
+  94   1      if(Model)
+  95   1      {
+  96   2         Temp=0x4000;
+  97   2      }
+  98   1      else
+  99   1          {
+ 100   2         Temp=0x0000;
+ 101   2      }
+ 102   1      
+ 103   1         DA_convert(Temp|Data);       
+ 104   1      }
+ 105          int main(void)
+ 106          {
+ 107   1              InitUART();
+ 108   1          while(1);
+ 109   1         
+ 110   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    195    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V8.08   MPSG_V1_0                                                             11/30/2018 13:53:09 PAGE 3   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

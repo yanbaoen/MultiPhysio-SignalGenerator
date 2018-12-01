@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"MPSG_V1.0.obj" 
+TO "MPSG_V1.0" 
+RAMSIZE(256) 

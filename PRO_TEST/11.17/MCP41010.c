@@ -1,16 +1,17 @@
-sbit RES_CS = P3^6; //Æ¬Ñ¡ 
+
+0sbit RES_CS = P3^6; //Æ¬Ñ¡ 
 sbit SCK = P3^5;
 sbit DI = P3^4;
 
 
-void Write_RES(uchar dat1) //µ÷ÕûÊý×ÖµçÎ»Æ÷
+void Write_RES(uchar dat1) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½Î»ï¿½ï¿½
 {uchar i,command=0x11;
 //dat1=~dat1;
 RES_CS = 0; //Æ¬Ñ¡ 
 _nop_(); 
 SCK = 0;
 _nop_(); 
-for(i=8;i>0;i--) //Ð´ÃüÁî
+for(i=8;i>0;i--) //Ð´ï¿½ï¿½ï¿½ï¿½
 {command <<= 1; 
 DI = CY;
 _nop_(); 
@@ -19,7 +20,7 @@ _nop_();
 SCK = 0;
 _nop_(); 
 }
-for(i=8;i>0;i--) //Ð´Êý¾Ý
+for(i=8;i>0;i--) //Ð´ï¿½ï¿½ï¿½ï¿½
 { dat1 <<= 1;
 DI = CY;
 _nop_(); 
