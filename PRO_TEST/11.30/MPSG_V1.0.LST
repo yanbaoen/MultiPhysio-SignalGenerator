@@ -1,4 +1,4 @@
-C51 COMPILER V8.08   MPSG_V1_0                                                             11/30/2018 13:53:09 PAGE 1   
+C51 COMPILER V8.08   MPSG_V1_0                                                             12/01/2018 20:32:39 PAGE 1   
 
 
 C51 COMPILER V8.08, COMPILATION OF MODULE MPSG_V1_0
@@ -38,7 +38,7 @@ line level    source
   28          void InitUART  (void)
   29          {
   30   1          SCON  =0x50;       // SCON: 模式 1, 8-bit UART, 使能接收 
-  31   1          TMOD |= 0x10;      // TMOD:timer 1, mode 1, 16-bit 重装
+  31   1          TMOD |= 0x20;      // TMOD:timer 1, mode 1, 8-bit 重装
   32   1          TH1 =TL1= 0xFD;   // TH1:  重装值9600 波特率 晶振 11.0592MHz  
   33   1          TR1   =1;               // TR1: timer 1 打开                     
   34   1          EA   = 1;              //打开总中断
@@ -62,77 +62,67 @@ line level    source
   52   1      }
   53          //****************** 串口中断程序 *******************
   54          void UART_SER (void) interrupt 4 
-C51 COMPILER V8.08   MPSG_V1_0                                                             11/30/2018 13:53:09 PAGE 2   
+C51 COMPILER V8.08   MPSG_V1_0                                                             12/01/2018 20:32:39 PAGE 2   
 
   55          {
-  56   1         unsigned char Temp;        
-  57   1         if(RI)                           //判断是接收中断产生
-  58   1         {
-  59   2          RI=0;                      //标志位清零
-  60   2          Temp=SBUF;           //读入缓冲区的值
-  61   2          Write_A_B(Temp,1);           
-  62   2          SendByte(Temp);  //把接收到的值再发回电脑端
-  63   2          }
-  64   1      }
-  65          void DA_convert(uint Dignum)
-  66          {
-  67   1      uint Dig=0;
-  68   1      uchar i=0;
-  69   1      SCLK=1;
-  70   1      CS=0;           //片选有效
-  71   1      for(i=0;i<16;i++)   //写入16Bit的控制位和数据
-  72   1      {
-  73   2         Dig=Dignum&0x8000;
-  74   2         if(Dig)
-  75   2         {
-  76   3          DIN=1;
-  77   3         }
-  78   2         else
-  79   2         {
-  80   3          DIN=0;
-  81   3         }
-  82   2         SCLK=0;
-  83   2         _nop_();
-  84   2         Dignum<<=1;
-  85   2         SCLK=1;
+  56   1         unsigned char* dat;
+  57   1         unsigned char ah,al;       
+  58   1         while(!RI);                           //判断是接收中断产生
+  59   1            RI=0;
+  60   1         al=SBUF;
+  61   1         while(!RI);
+  62   1            RI=0;
+  63   1         ah=SBUF;
+  64   1         dat=(ah<<8)|al;
+*** ERROR C214 IN LINE 64 OF MPSG_V1.0.C: illegal pointer conversion
+  65   1          Write_A_B(dat,1);           
+  66   1          SendStr(dat);  //把接收到的值再发回电脑端
+  67   1      }
+  68          void DA_convert(uint Dignum)
+  69          {
+  70   1      uint Dig=0;
+  71   1      uchar i=0;
+  72   1      SCLK=1;
+  73   1      CS=0;           //片选有效
+  74   1      for(i=0;i<16;i++)   //写入16Bit的控制位和数据
+  75   1      {
+  76   2         Dig=Dignum&0x8000;
+  77   2         if(Dig)
+  78   2         {
+  79   3          DIN=1;
+  80   3         }
+  81   2         else
+  82   2         {
+  83   3          DIN=0;
+  84   3         }
+  85   2         SCLK=0;
   86   2         _nop_();
-  87   2      }
-  88   1      SCLK=1;
-  89   1      CS=1;       //片选无效
-  90   1      }
-  91          void Write_A_B(uint Data,bit Model)
-  92          {
-  93   1      uint Temp;
-  94   1      if(Model)
-  95   1      {
-  96   2         Temp=0x4000;
-  97   2      }
-  98   1      else
-  99   1          {
- 100   2         Temp=0x0000;
- 101   2      }
- 102   1      
- 103   1         DA_convert(Temp|Data);       
- 104   1      }
- 105          int main(void)
- 106          {
- 107   1              InitUART();
- 108   1          while(1);
- 109   1         
- 110   1      }
+  87   2         Dignum<<=1;
+  88   2         SCLK=1;
+  89   2         _nop_();
+  90   2      }
+  91   1      SCLK=1;
+  92   1      CS=1;       //片选无效
+  93   1      }
+  94          void Write_A_B(uint Data,bit Model)
+  95          {
+  96   1      uint Temp;
+  97   1      if(Model)
+  98   1      {
+  99   2         Temp=0x4000;
+ 100   2      }
+ 101   1      else
+ 102   1          {
+ 103   2         Temp=0x0000;
+ 104   2      }
+ 105   1      
+ 106   1         DA_convert(Temp|Data);       
+ 107   1      }
+ 108          int main(void)
+ 109          {
+ 110   1              InitUART();
+ 111   1          while(1);
+ 112   1         
+ 113   1      }
 
-
-MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    195    ----
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
-C51 COMPILER V8.08   MPSG_V1_0                                                             11/30/2018 13:53:09 PAGE 3   
-
-   PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       1
-   IDATA SIZE       =   ----    ----
-   BIT SIZE         =   ----       1
-END OF MODULE INFORMATION.
-
-
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)

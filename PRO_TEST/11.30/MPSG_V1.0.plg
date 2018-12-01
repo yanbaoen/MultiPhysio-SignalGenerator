@@ -10,53 +10,19 @@ Project File Date:  11/30/2018
 创建目标 '目标 1'
 PA51汇编 STARTUP.A51 ...
 编译 MPSG_V1.0.c ...
-MPSG_V1.0.C(61): 错误 C202: 'Channal_A': undefined identifier
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0xEF skipped
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0xBC skipped
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0x8C skipped
-MPSG_V1.0.C(91): 错误 C141: syntax error near 'Model', expected ')'
-MPSG_V1.0.C(92): 错误 C236: '_Write_A_B': different length of parameter lists
-MPSG_V1.0.C(94): 错误 C202: 'Model': undefined identifier
-MPSG_V1.0.C(103): 错误 C202: 'Data': undefined identifier
-目标未产生
-创建目标 '目标 1'
-PA51汇编 STARTUP.A51 ...
-编译 MPSG_V1.0.c ...
-MPSG_V1.0.C(61): 错误 C202: 'Channal_A': undefined identifier
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0xEF skipped
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0xBC skipped
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0x8C skipped
-MPSG_V1.0.C(91): 错误 C141: syntax error near 'Model', expected ')'
-MPSG_V1.0.C(92): 错误 C236: '_Write_A_B': different length of parameter lists
-MPSG_V1.0.C(94): 错误 C202: 'Model': undefined identifier
-MPSG_V1.0.C(103): 错误 C202: 'Data': undefined identifier
-目标未产生
-创建目标 '目标 1'
-PA51汇编 STARTUP.A51 ...
-编译 MPSG_V1.0.c ...
-MPSG_V1.0.C(21): 错误 C100: unprintable character 0xEF skipped
-MPSG_V1.0.C(21): 错误 C100: unprintable character 0xBC skipped
-MPSG_V1.0.C(21): 错误 C100: unprintable character 0x8C skipped
-MPSG_V1.0.C(21): 错误 C141: syntax error near 'Model', expected ')'
-MPSG_V1.0.C(61): 错误 C208: '_Write_A_B': too many actual parameters
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0xEF skipped
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0xBC skipped
-MPSG_V1.0.C(91): 错误 C100: unprintable character 0x8C skipped
-MPSG_V1.0.C(91): 错误 C141: syntax error near 'Model', expected ')'
-MPSG_V1.0.C(94): 错误 C202: 'Model': undefined identifier
-MPSG_V1.0.C(103): 错误 C202: 'Data': undefined identifier
-目标未产生
-创建目标 '目标 1'
-PA51汇编 STARTUP.A51 ...
-编译 MPSG_V1.0.c ...
-MPSG_V1.0.C(61): 错误 C202: 'Channal_A': undefined identifier
-目标未产生
-创建目标 '目标 1'
-PA51汇编 STARTUP.A51 ...
-编译 MPSG_V1.0.c ...
 连接 ...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SENDSTR?MPSG_V1_0
-Program Size: data=10.1 xdata=0 code=238
+Program Size: data=11.1 xdata=0 code=249
 创建 HEX 文件 "MPSG_V1.0" ...
 "MPSG_V1.0" - 0 个错误, 1 个警告。
+创建目标 '目标 1'
+PA51汇编 STARTUP.A51 ...
+编译 MPSG_V1.0.c ...
+MPSG_V1.0.C(66): 错误 C214: illegal pointer conversion
+目标未产生
+创建目标 '目标 1'
+PA51汇编 STARTUP.A51 ...
+编译 MPSG_V1.0.c ...
+MPSG_V1.0.C(64): 错误 C214: illegal pointer conversion
+目标未产生
