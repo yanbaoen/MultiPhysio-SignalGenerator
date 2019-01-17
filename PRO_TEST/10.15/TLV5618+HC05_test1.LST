@@ -1,4 +1,4 @@
-C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    10/15/2018 15:49:25 PAGE 1   
+C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    01/11/2019 18:21:37 PAGE 1   
 
 
 C51 COMPILER V8.08, COMPILATION OF MODULE TLV5618_HC05_TEST1
@@ -62,7 +62,7 @@ line level    source
   52   1          {
   53   2             SendByte(*s);
   54   2             s++;
-C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    10/15/2018 15:49:25 PAGE 2   
+C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    01/11/2019 18:21:37 PAGE 2   
 
   55   2          }
   56   1      }
@@ -74,7 +74,7 @@ line level    source
   62   1         {
   63   2          RI=0;                      //标志位清零
   64   2          Temp=SBUF;           //读入缓冲区的值
-  65   2          Write_A_B(Temp,0x0000,Channal_A,0);           
+  65   2          Write_A_B(Temp,0x0000,Channal_A,1);           
   66   2          SendByte(Temp);  //把接收到的值再发回电脑端
   67   2          }
   68   1      }
@@ -126,7 +126,7 @@ line level    source
  113          void Write_A_B(uint Data_A,uint Data_B,uchar Channal,bit Model)
  114          {
  115   1      uint Temp;
-C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    10/15/2018 15:49:25 PAGE 3   
+C51 COMPILER V8.08   TLV5618_HC05_TEST1                                                    01/11/2019 18:21:37 PAGE 3   
 
  116   1      if(Model)
  117   1      {

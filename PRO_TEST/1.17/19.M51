@@ -1,0 +1,338 @@
+BL51 BANKED LINKER/LOCATER V6.05                                                        01/16/2019  14:51:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.05, INVOKED BY:
+E:\PROGRAM FILES (X86)\KEIL\C51\BIN\BL51.EXE STARTUP.obj, 19.obj TO 19 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  19.obj (19)
+  E:\PROGRAM FILES (X86)\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  E:\PROGRAM FILES (X86)\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  E:\PROGRAM FILES (X86)\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  19 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0006H     UNIT         _DATA_GROUP_
+            DATA    000EH     0002H     UNIT         ?DT?19
+                    0010H     0010H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0020H     UNIT         ?PR?UART_SER?19
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     07D0H     UNIT         ?CO?19
+            CODE    07F6H     008CH     UNIT         ?C_C51STARTUP
+            CODE    0882H     0077H     UNIT         ?PR?_MCP42100_CONTROL?19
+            CODE    08F9H     006EH     UNIT         ?C?LIB_CODE
+            CODE    0967H     0059H     UNIT         ?PR?_WRITE_A_B?19
+            CODE    09C0H     0047H     UNIT         ?PR?MAIN?19
+            CODE    0A07H     002AH     UNIT         ?PR?_DA_CONVER?19
+            CODE    0A31H     0013H     UNIT         ?PR?INITUART?19
+            CODE    0A44H     0013H     UNIT         ?PR?_SENDSTR?19
+            CODE    0A57H     0008H     UNIT         ?PR?_SENDBYTE?19
+            CODE    0A5FH     0005H     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   19 (?C_STARTUP)
+
+
+SEGMENT                             BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT            START    LENGTH     START    LENGTH
+--------------------------------------------------------------------
+?C_C51STARTUP                    -----    -----      -----    -----
+  +--> ?PR?MAIN?19
+  +--> ?C_INITSEG
+
+BL51 BANKED LINKER/LOCATER V6.05                                                      01/16/2019  14:51:24  PAGE 2
+
+
+?PR?MAIN?19                      -----    -----      0008H    0002H
+  +--> ?PR?INITUART?19
+  +--> ?CO?19
+  +--> ?PR?_WRITE_A_B?19
+
+?PR?_WRITE_A_B?19                0020H.0  0000H.1    000AH    0004H
+  +--> ?PR?_DA_CONVER?19
+
+*** NEW ROOT ***************************************************
+
+?PR?UART_SER?19                  -----    -----      -----    -----
+  +--> ?PR?_SENDBYTE?19
+
+
+
+SYMBOL TABLE OF MODULE:  19 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:07F6H         SEGMENT       ?C_C51STARTUP
+  I:0021H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:07F9H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:07F6H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:07F6H         LINE#         133
+  C:07F8H         LINE#         134
+  C:07F9H         LINE#         135
+  C:07FAH         LINE#         136
+  C:07FCH         LINE#         185
+  C:07FFH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        19
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0026H         PUBLIC        ECG1
+BL51 BANKED LINKER/LOCATER V6.05                                                      01/16/2019  14:51:24  PAGE 3
+
+
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:0003H         PUBLIC        UART_SER
+  D:00A8H         PUBLIC        IE
+  B:0090H.2       PUBLIC        CS
+  B:00A8H.4       PUBLIC        ES
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  B:0090H.5       PUBLIC        MCP42100_SCK
+  B:0098H.1       PUBLIC        TI
+  C:0882H         PUBLIC        _MCP42100_Control
+  C:0A57H         PUBLIC        _SendByte
+  C:09C0H         PUBLIC        main
+  B:0090H.1       PUBLIC        SCLK
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0A44H         PUBLIC        _SendStr
+  D:000EH         SYMBOL        new
+  D:008DH         PUBLIC        TH1
+  B:0090H.6       PUBLIC        MCP42100_CS
+  C:0967H         PUBLIC        _Write_A_B
+  D:008BH         PUBLIC        TL1
+  C:0A31H         PUBLIC        InitUART
+  B:0090H.4       PUBLIC        MCP42100_SI
+  B:0088H.6       PUBLIC        TR1
+  B:0090H.0       PUBLIC        DIN
+  D:00C8H         PUBLIC        T2CON
+  C:0A07H         SYMBOL        _DA_conver
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INITUART
+  C:0A31H         LINE#         38
+  C:0A31H         LINE#         39
+  C:0A31H         LINE#         40
+  C:0A34H         LINE#         41
+  C:0A37H         LINE#         42
+  C:0A3DH         LINE#         43
+  C:0A3FH         LINE#         44
+  C:0A41H         LINE#         45
+  C:0A43H         LINE#         46
+  -------         ENDPROC       INITUART
+  -------         PROC          _SENDBYTE
+  D:0007H         SYMBOL        dat
+  C:0A57H         LINE#         48
+  C:0A57H         LINE#         49
+  C:0A57H         LINE#         50
+  C:0A59H         LINE#         51
+  C:0A5CH         LINE#         52
+  C:0A5EH         LINE#         53
+  -------         ENDPROC       _SENDBYTE
+  -------         PROC          _SENDSTR
+  D:0001H         SYMBOL        s
+  C:0A44H         LINE#         55
+  C:0A44H         LINE#         56
+  C:0A44H         LINE#         57
+BL51 BANKED LINKER/LOCATER V6.05                                                      01/16/2019  14:51:24  PAGE 4
+
+
+  C:0A4AH         LINE#         58
+  C:0A4AH         LINE#         59
+  C:0A4DH         LINE#         60
+  C:0A54H         LINE#         61
+  C:0A56H         LINE#         62
+  -------         ENDPROC       _SENDSTR
+  -------         PROC          UART_SER
+  -------         DO            
+  D:0007H         SYMBOL        Temp
+  -------         ENDDO         
+  C:0003H         LINE#         64
+  C:000CH         LINE#         68
+  C:000FH         LINE#         69
+  C:000FH         LINE#         70
+  C:0011H         LINE#         71
+  C:0013H         LINE#         72
+  C:0019H         LINE#         84
+  C:001CH         LINE#         85
+  C:001CH         LINE#         86
+  -------         ENDPROC       UART_SER
+  -------         PROC          _DA_CONVER
+  D:0006H         SYMBOL        Dignum
+  -------         DO            
+  D:0004H         SYMBOL        Dig
+  D:0003H         SYMBOL        i
+  -------         ENDDO         
+  C:0A07H         LINE#         1090
+  C:0A07H         LINE#         1091
+  C:0A07H         LINE#         1092
+  C:0A08H         LINE#         1093
+  C:0A09H         LINE#         1094
+  C:0A0BH         LINE#         1095
+  C:0A0DH         LINE#         1096
+  C:0A0DH         LINE#         1097
+  C:0A0DH         LINE#         1098
+  C:0A13H         LINE#         1099
+  C:0A15H         LINE#         1100
+  C:0A15H         LINE#         1101
+  C:0A17H         LINE#         1102
+  C:0A19H         LINE#         1104
+  C:0A19H         LINE#         1105
+  C:0A1BH         LINE#         1106
+  C:0A1BH         LINE#         1107
+  C:0A1DH         LINE#         1108
+  C:0A1EH         LINE#         1109
+  C:0A25H         LINE#         1110
+  C:0A27H         LINE#         1111
+  C:0A28H         LINE#         1112
+  C:0A2CH         LINE#         1113
+  C:0A2EH         LINE#         1114
+  C:0A30H         LINE#         1115
+  -------         ENDPROC       _DA_CONVER
+  -------         PROC          _MCP42100_CONTROL
+  D:0002H         SYMBOL        _ch
+  D:0004H         SYMBOL        _value
+  -------         DO            
+  D:0082H         SYMBOL        i
+BL51 BANKED LINKER/LOCATER V6.05                                                      01/16/2019  14:51:24  PAGE 5
+
+
+  -------         ENDDO         
+  C:0882H         LINE#         1117
+  C:0886H         LINE#         1118
+  C:0886H         LINE#         1119
+  C:0886H         LINE#         1120
+  C:0888H         LINE#         1121
+  C:088DH         LINE#         1122
+  C:088DH         LINE#         1123
+  C:088FH         LINE#         1124
+  C:08AFH         LINE#         1125
+  C:08B1H         LINE#         1126
+  C:08B2H         LINE#         1127
+  C:08B4H         LINE#         1128
+  C:08B5H         LINE#         1129
+  C:08BEH         LINE#         1130
+  C:08C3H         LINE#         1131
+  C:08C3H         LINE#         1132
+  C:08C5H         LINE#         1133
+  C:08E5H         LINE#         1134
+  C:08E7H         LINE#         1135
+  C:08E8H         LINE#         1136
+  C:08EAH         LINE#         1137
+  C:08EBH         LINE#         1138
+  C:08F4H         LINE#         1139
+  C:08F6H         LINE#         1140
+  C:08F8H         LINE#         1141
+  -------         ENDPROC       _MCP42100_CONTROL
+  -------         PROC          _WRITE_A_B
+  D:000AH         SYMBOL        Data_A
+  D:000CH         SYMBOL        Data_B
+  D:0003H         SYMBOL        Channal
+  B:0020H.0       SYMBOL        Model
+  -------         DO            
+  D:0082H         SYMBOL        Temp
+  -------         ENDDO         
+  C:0967H         LINE#         1153
+  C:096FH         LINE#         1154
+  C:096FH         LINE#         1156
+  C:0972H         LINE#         1157
+  C:0972H         LINE#         1158
+  C:0975H         LINE#         1159
+  C:0977H         LINE#         1161
+  C:0977H         LINE#         1162
+  C:097CH         LINE#         1163
+  C:097CH         LINE#         1164
+  C:0988H         LINE#         1165
+  C:0988H         LINE#         1166
+  C:0988H         LINE#         1167
+  C:0988H         LINE#         1168
+  C:098AH         LINE#         1169
+  C:098AH         LINE#         1170
+  C:0995H         LINE#         1171
+  C:0997H         LINE#         1172
+  C:0997H         LINE#         1173
+  C:09ABH         LINE#         1174
+  C:09BFH         LINE#         1175
+  C:09BFH         LINE#         1176
+BL51 BANKED LINKER/LOCATER V6.05                                                      01/16/2019  14:51:24  PAGE 6
+
+
+  C:09BFH         LINE#         1177
+  C:09BFH         LINE#         1178
+  C:09BFH         LINE#         1179
+  -------         ENDPROC       _WRITE_A_B
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:09C0H         LINE#         1186
+  C:09C0H         LINE#         1187
+  C:09C0H         LINE#         1189
+  C:09C3H         LINE#         1190
+  C:09C3H         LINE#         1191
+  C:09C3H         LINE#         1210
+  C:09C8H         LINE#         1211
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        19
+
+  -------         MODULE        ?C?CLDPTR
+  C:08F9H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?UIDIV
+  C:0912H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDSTR?19
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_MCP42100_CONTROL?19
+
+Program Size: data=17.1 xdata=0 code=2660
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

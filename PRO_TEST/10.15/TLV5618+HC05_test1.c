@@ -62,7 +62,7 @@ void UART_SER (void) interrupt 4
    {
     RI=0;                      //标志位清零
     Temp=SBUF;           //读入缓冲区的值
-    Write_A_B(Temp,0x0000,Channal_A,0);           
+    Write_A_B(Temp,0x0000,Channal_A,1);           
     SendByte(Temp);  //把接收到的值再发回电脑端
     }
 }
